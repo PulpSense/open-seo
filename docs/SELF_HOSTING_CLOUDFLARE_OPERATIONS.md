@@ -26,9 +26,22 @@ MCP clients should connect to:
 https://YOUR_WORKER_HOSTNAME/mcp
 ```
 
+## AI assistant and research
+
+Self-hosted deployments can use the OpenAI API directly. Set `OPENAI_API_KEY`
+in `.env.selfhost` and redeploy. `OPENAI_MODEL` optionally overrides the default
+`gpt-5.6-luna` model. This powers the in-app assistant, website setup research,
+prompt research, and prompt suggestions. Usage is billed to your OpenAI account.
+
+Alternatively, set `OPENROUTER_API_KEY` and optionally `OPENROUTER_MODEL`.
+When both provider keys are configured, self-hosted deployments use OpenAI.
+Hosted deployments continue using OpenRouter for hosted usage-credit accounting.
+OpenAI costs are available in your OpenAI dashboard; OpenSEO does not report
+OpenRouter credit charges for those direct calls.
+
 ## AI visibility tracking
 
-AI Visibility uses your `DATAFORSEO_API_KEY`; tracked questions are sent to DataForSEO and billed directly by the provider. Set `OPENROUTER_API_KEY` for setup research, Prompt Research, and generated prompt suggestions. Deployment configures background collection and a five-minute cron that dispatches due daily, weekly, or monthly checks. The app shows the collection cost before a check or schedule starts. See the [AI Visibility guide](https://openseo.so/docs/ai-visibility).
+AI Visibility uses your `DATAFORSEO_API_KEY`; tracked questions are sent to DataForSEO and billed directly by the provider. Configure an AI provider as described above for setup research, Prompt Research, and generated prompt suggestions. Deployment configures background collection and a five-minute cron that dispatches due daily, weekly, or monthly checks. The app shows the collection cost before a check or schedule starts. See the [AI Visibility guide](https://openseo.so/docs/ai-visibility).
 
 ## Render JavaScript in site audits
 

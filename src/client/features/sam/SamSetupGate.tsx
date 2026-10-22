@@ -17,14 +17,14 @@ export function SamSetupGate({
     <GateCard
       icon={Wrench}
       tone="warning"
-      title="Enable AI Features"
+      title="Enable AI features"
       description={
         <>
           <p>
-            SAM, OpenSEO&apos;s in-app AI agent, needs an OpenRouter API key.
-            Create a key on OpenRouter, set it as the{" "}
-            <code>OPENROUTER_API_KEY</code> environment variable, restart
-            OpenSEO, then confirm here.
+            SAM, OpenSEO&apos;s in-app AI agent, needs an OpenAI or OpenRouter
+            API key. Set an OpenAI key as <code>OPENAI_API_KEY</code> or an
+            OpenRouter key as the <code>OPENROUTER_API_KEY</code> environment
+            variable, restart OpenSEO, then confirm here.
           </p>
           <p className="text-xs">
             Step-by-step instructions for every deployment are in the{" "}
@@ -41,7 +41,7 @@ export function SamSetupGate({
       actions={
         <>
           <Button size="lg" pending={isRefetching} onClick={onRetry}>
-            Confirm API Key
+            Confirm API key
           </Button>
           <Button
             size="lg"
@@ -55,7 +55,7 @@ export function SamSetupGate({
               />
             }
           >
-            Open OpenRouter Keys
+            Open OpenRouter keys
           </Button>
         </>
       }

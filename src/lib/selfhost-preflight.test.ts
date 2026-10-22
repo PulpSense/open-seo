@@ -56,3 +56,12 @@ describe("runSelfhostPreflight", () => {
     expect(itemFor(result, "Search Console")?.message).toContain("32");
   });
 });
+
+it("enables AI features with a direct OpenAI key", () => {
+  const result = runSelfhostPreflight({
+    AUTH_MODE: "local_noauth",
+    OPENAI_API_KEY: "key",
+  });
+  expect(itemFor(result, "AI features")?.level).toBe("ok");
+  expect(itemFor(result, "AI features")?.message).toBe("OPENAI_API_KEY set");
+});

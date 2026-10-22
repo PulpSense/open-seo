@@ -16,11 +16,7 @@ import { fetchLiveSerp } from "@/server/lib/dataforseo/serp";
 import { DataforseoChargedTaskError } from "@/server/lib/dataforseo/envelope";
 import { normalizeBacklinksTarget } from "@/server/lib/dataforseoBacklinksTarget";
 import { AppError } from "@/server/lib/errors";
-import { buildChatAgentModel } from "@/server/lib/openrouter";
-import {
-  getOptionalEnvValue,
-  getRequiredEnvValue,
-} from "@/server/lib/runtime-env";
+import { getConfiguredAiModel } from "@/server/lib/ai-model";
 import { readSite } from "@/server/lib/scrape";
 import {
   CONTEXT_USD_PER_CREDIT,
@@ -164,11 +160,7 @@ export async function researchWebsite(
       searchOutage = false;
       sources.clear();
       return generateText({
-        model: buildChatAgentModel(
-          await getRequiredEnvValue("OPENROUTER_API_KEY"),
-          await getOptionalEnvValue("OPENROUTER_MODEL"),
-          "low",
-        ),
+        model: await getConfiguredAiModel("low"),
         output: Output.object({
           schema: outputSchema,
         }),
@@ -327,6 +319,7 @@ export async function researchWebsite(
             }
           : undefined,
         onStepFinish: (step) => {
+          if (step.providerMetadata?.openai) return;
           spend.push({
             provider: "openrouter",
             creditFeature: "agent",

@@ -85,6 +85,9 @@ declare namespace Cloudflare {
       }
     >;
 
+    // Direct OpenAI for self-hosted AI features.
+    OPENAI_API_KEY?: string;
+    OPENAI_MODEL?: string;
     // OpenRouter API key for the SAM in-app chat agent.
     OPENROUTER_API_KEY?: string;
     // Optional OpenRouter model slug override (defaults in openrouter.ts).
