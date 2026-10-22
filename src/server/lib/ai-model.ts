@@ -66,8 +66,9 @@ export function buildConfiguredAiModel(
     provider: "openai.responses",
     modelId: config.model,
     supportedUrls: {},
-    doGenerate: async (params) => (await load()).doGenerate(params),
-    doStream: async (params) => (await load()).doStream(params),
+    doGenerate: async (params) =>
+      (await load()).doGenerate(prepareParams(params)),
+    doStream: async (params) => (await load()).doStream(prepareParams(params)),
   };
 }
 
@@ -83,3 +84,15 @@ export async function getConfiguredAiModel(
   );
   return buildConfiguredAiModel(env, reasoningEffort);
 }
+
+// Responses defaults function schemas to strict mode, which turns optional
+// tool arguments into required fields. Preserve the tools' Zod defaults and
+// optional date ranges unless a tool explicitly opts into strict mode.
+const prepareParams = (
+  params: Parameters<LanguageModelV3["doGenerate"]>[0],
+) => ({
+  ...params,
+  tools: params.tools?.map((tool) =>
+    tool.type === "function" ? { ...tool, strict: tool.strict ?? false } : tool,
+  ),
+});

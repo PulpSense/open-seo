@@ -81,7 +81,10 @@ it("sends the self-hosted key to OpenAI and completes a tool round trip", async 
     prompt: "Read the site's metrics.",
     tools: {
       site_metrics: tool({
-        inputSchema: z.object({ site: z.string() }),
+        inputSchema: z.object({
+          site: z.string(),
+          startDate: z.string().optional(),
+        }),
         execute,
       }),
     },
@@ -95,5 +98,19 @@ it("sends the self-hosted key to OpenAI and completes a tool round trip", async 
     expect(new Headers(options?.headers).get("authorization")).toBe(
       "Bearer direct-key",
     );
+    const body = z
+      .object({
+        tools: z.array(
+          z.object({
+            strict: z.boolean(),
+            parameters: z.object({ required: z.array(z.string()) }),
+          }),
+        ),
+      })
+      .parse(
+        JSON.parse(typeof options?.body === "string" ? options.body : "{}"),
+      );
+    expect(body.tools[0].strict).toBe(false);
+    expect(body.tools[0].parameters.required).toEqual(["site"]);
   }
 });
